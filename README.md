@@ -1,50 +1,66 @@
-# Welcome to your Expo app 👋
+# Task Manager App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Description
 
-## Get started
+Task Manager App is a mobile application built with React Native and Expo that helps users manage their daily tasks efficiently. Users can create, edit, delete, and mark tasks as completed. The app also includes user authentication to ensure that each user's tasks are securely managed.
 
-1. Install dependencies
 
-   ```bash
+## Project Setup
+
+### Prerequisites
+- Node.js
+- npm or yarn
+- Expo CLI
+
+### Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/dee-raj/task-manager-app.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd task-manager-app
+   ```
+3. Install dependencies:
+   ```sh
    npm install
    ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
+   or
+   ```sh
+   yarn install
    ```
 
-In the output, you'll find options to open the app in a
+### Running the App
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Start the Expo server:
+   ```sh
+   expo start
+   ```
+2. Use the Expo Go app on your mobile device to scan the QR code and run the app.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## App Features
 
-## Get a fresh project
+- **Task Creation**: Add new tasks with details.
+- **Task Management**: Edit or delete existing tasks.
+- **Task Completion**: Mark tasks as completed.
+- **User Authentication**: Sign up and log in to manage your tasks.
 
-When you're ready, run:
+## Technologies Used
 
-```bash
-npm run reset-project
-```
+- React Native
+- Expo
+- Redux (for state management)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Contributing
 
-## Learn more
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
-To learn more about developing your project with Expo, look at the following resources:
+## License
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License.
