@@ -4,7 +4,6 @@
 
 Task Manager App is a mobile application built with React Native and Expo that helps users manage their daily tasks efficiently. Users can create, edit, delete, and mark tasks as completed. The app also includes user authentication to ensure that each user's tasks are securely managed.
 
-
 ## Project Setup
 
 ### Prerequisites
@@ -64,3 +63,18 @@ Task Manager App is a mobile application built with React Native and Expo that h
 ## License
 
 This project is licensed under the MIT License.
+
+## Known Issues
+
+- Some users may experience delays in task synchronization.
+- The app may occasionally crash on older versions of Android.
+
+## Additional Notes
+
+- Ensure that you have the latest version of Expo CLI installed.
+- For any issues or feature requests, please open an issue on GitHub.
+
+## Demo Video
+
+Watch the demo video to see the app in action:
+[Demo Video](task_manager_app.mp4)

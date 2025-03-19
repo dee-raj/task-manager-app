@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Text, TextInput, Button, StyleSheet,
-    SafeAreaView, View, Alert, Pressable,
+    SafeAreaView, View, Pressable,
     TouchableOpacity
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -34,7 +34,6 @@ const EditTaskScreen = () => {
 
 
     const handleSave = async () => {
-        console.log('handleSave');
         const task = {
             id,
             title,
@@ -48,27 +47,6 @@ const EditTaskScreen = () => {
                 router.push('/');
             });
         });
-        console.log('saved task:', task);
-    };
-
-    const handleDelete = () => {
-        Alert.alert(
-            "Delete Task",
-            "Are you sure you want to delete this task?",
-            [
-                { text: "Cancel", style: "cancel" },
-                {
-                    text: "Delete", style: "destructive", onPress: async () => {
-                        await AsyncStorage.getItem('tasks').then(async (storedTasks) => {
-                            const tasks = storedTasks ? JSON.parse(storedTasks) : [];
-                            const updatedTasks = tasks.filter((t: { id: string }) => t.id !== id);
-                            await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
-                        });
-                        router.push('/');
-                    }
-                }
-            ]
-        );
     };
 
     return (
@@ -93,10 +71,18 @@ const EditTaskScreen = () => {
                 value={description}
                 onChangeText={setDescription}
             />
-            <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-                <MaterialIcons name="date-range" size={24} color="black" />
-                <Text style={styles.dateButtonText}>Select Due Date</Text>
-            </Pressable>
+            <View style={[styles.currentTaskContainer, {marginTop: 16, flexDirection: 'column' }]}>
+                <>
+                <Text style={styles.currentTaskTitle}>Current Due Date</Text>
+                {dueDate && <Text style={styles.currentTaskText}>{new Date(dueDate).toDateString()}</Text>}
+                </>
+                <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+                    <MaterialIcons name="edit-calendar" size={22} color="blue" />
+                    <Text style={styles.dateButtonText}>
+                        Edit Due Date
+                    </Text>
+                </Pressable>
+            </View>
 
             {showDatePicker && (
                 <>
@@ -116,11 +102,7 @@ const EditTaskScreen = () => {
             )}
 
             <View style={styles.buttonContainer}>
-                <Button title="Save" onPress={handleSave} />
-            </View>
-
-            <View style={styles.buttonContainer}>
-                <Button title="Delete" color="red" onPress={handleDelete} />
+                <Button title="Save"  onPress={handleSave} color={"#10FF09"} />
             </View>
         </SafeAreaView>
     );
@@ -175,13 +157,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10,
-        backgroundColor: '#A0ABFF',
+        backgroundColor: '#A0AB11',
         borderRadius: 8,
         marginTop: 16,
     },
     dateButtonText: {
         marginLeft: 8,
-        color: 'white',
+        color: 'blue',
         fontSize: 16,
     },
 });

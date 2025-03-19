@@ -1,7 +1,7 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import { View, TextInput, FlatList, Text, StyleSheet } from 'react-native';
+import { View, TextInput, FlatList, Text, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Task } from '@/types';
@@ -27,20 +27,38 @@ const HomeScreen: React.FC = () => {
     };
 
     fetchTasks();
-  }, [tasks]);
+  }, []);
 
+  // handle search 
   const handleSearch = (text: string) => {
     setSearch(text);
-    if (text) {
-      const newData = tasks.filter(item => {
-        const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredTasks(newData); // Update filteredTasks with the filtered list
-    } else {
-      setFilteredTasks(tasks); // Reset filteredTasks to show all tasks
-    }
+    const filteredTasks = tasks.filter((task) => {
+      const byTitle = task.title.toLowerCase().includes(text.toLowerCase());
+      const byDescription = task.description.toLowerCase().includes(text.toLowerCase());
+      return byTitle || byDescription;
+    });
+    setFilteredTasks(filteredTasks);
+  };
+
+  // handle delete
+  const handleDelete = (id: string) => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete", style: "destructive", onPress: async () => {
+            await AsyncStorage.getItem('tasks').then(async (storedTasks) => {
+              const tasks = storedTasks ? JSON.parse(storedTasks) : [];
+              const updatedTasks = tasks.filter((t: { id: string }) => t.id !== id);
+              await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+            });
+            router.push('/');
+          }
+        }
+      ]
+    );
   };
 
   return (
@@ -70,9 +88,9 @@ const HomeScreen: React.FC = () => {
                   pathname: '/edit-task/[id]',
                   params: { id: item.id },
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                  <MaterialIcons name="edit-square" size={16} color="#FE9011" />
-                  <Text style={{ color: '#FE0011', marginLeft: 4 }}>Delete</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
+                  <MaterialIcons name="edit-square" size={24} color="#1e90ff" />
+                  <Text style={{ color: '#1e90ff', marginLeft: 4 }}>Edit This</Text>
                 </View>
               </Link>
             </View>
@@ -80,21 +98,21 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.cardDescription}>{item.description}</Text>
             <View style={styles.cardFooter}>
               <Text style={styles.cardDueDate}>{new Date(item.dueDate).toDateString()}</Text>
-              <Link style={styles.cardLink}
-                href={{
-                  pathname: '/edit-task/[id]',
-                  params: { id: item.id },
-                }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                  <MaterialIcons name="edit-square" size={16} color="#1e90ff" />
-                  <Text style={{ color: '#1e90ff', marginLeft: 4 }}>Edit</Text>
-                </View>
-              </Link>
+              <MaterialIcons.Button
+                name="delete"
+                backgroundColor="#FE901100"
+                color="#FE0011"
+                size={24}
+                onPress={() => handleDelete(item.id)}
+              >
+                <Text style={{ color: '#FE0011', marginLeft: 4 }}>Delete</Text>
+              </MaterialIcons.Button>
             </View>
           </View>
         )}
       />
 
+      {/* FAB*/}
       <MaterialIcons
         name="add-circle"
         size={56}
