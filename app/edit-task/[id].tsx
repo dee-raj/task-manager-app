@@ -33,7 +33,7 @@ const EditTaskScreen = () => {
     }, []);
 
 
-    const handleSave = () => {
+    const handleSave = async () => {
         console.log('handleSave');
         const task = {
             id,
@@ -41,7 +41,13 @@ const EditTaskScreen = () => {
             description,
             dueDate,
         };
-
+        await AsyncStorage.getItem('tasks').then(async (storedTasks) => {
+            const tasks = storedTasks ? JSON.parse(storedTasks) : [];
+            const updatedTasks = tasks.map((t: { id: string }) => t.id === id ? task : t);
+            await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks)).then(() => {
+                router.push('/');
+            });
+        });
         console.log('saved task:', task);
     };
 
@@ -52,7 +58,12 @@ const EditTaskScreen = () => {
             [
                 { text: "Cancel", style: "cancel" },
                 {
-                    text: "Delete", style: "destructive", onPress: () => {
+                    text: "Delete", style: "destructive", onPress: async () => {
+                        await AsyncStorage.getItem('tasks').then(async (storedTasks) => {
+                            const tasks = storedTasks ? JSON.parse(storedTasks) : [];
+                            const updatedTasks = tasks.filter((t: { id: string }) => t.id !== id);
+                            await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                        });
                         router.push('/');
                     }
                 }

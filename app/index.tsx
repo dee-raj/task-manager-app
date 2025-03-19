@@ -27,7 +27,7 @@ const HomeScreen: React.FC = () => {
     };
 
     fetchTasks();
-  }, []);
+  }, [tasks]);
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -61,22 +61,34 @@ const HomeScreen: React.FC = () => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View style={styles.card} key={item.id}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDescription}>{item.description}</Text>
-            <View style={styles.cardFooter}>
-              <Text style={styles.cardDueDate}>{new Date(item.dueDate).toDateString()}</Text>
-              <Link
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles.cardTitle}>
+                {item.title}
+              </Text>
+              <Link style={styles.cardLink}
                 href={{
                   pathname: '/edit-task/[id]',
                   params: { id: item.id },
                 }}>
-                <Text style={styles.cardLink}>
-                  <MaterialIcons name="edit" size={16} color="#1e90ff" />
-                  Update
-                  {" / "}
-                  <MaterialIcons name="restore-from-trash" size={16} color="#1e90ff" />
-                  Delete
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <MaterialIcons name="edit-square" size={16} color="#FE9011" />
+                  <Text style={{ color: '#FE0011', marginLeft: 4 }}>Delete</Text>
+                </View>
+              </Link>
+            </View>
+
+            <Text style={styles.cardDescription}>{item.description}</Text>
+            <View style={styles.cardFooter}>
+              <Text style={styles.cardDueDate}>{new Date(item.dueDate).toDateString()}</Text>
+              <Link style={styles.cardLink}
+                href={{
+                  pathname: '/edit-task/[id]',
+                  params: { id: item.id },
+                }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <MaterialIcons name="edit-square" size={16} color="#1e90ff" />
+                  <Text style={{ color: '#1e90ff', marginLeft: 4 }}>Edit</Text>
+                </View>
               </Link>
             </View>
           </View>
